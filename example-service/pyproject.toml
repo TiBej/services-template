@@ -1,15 +1,16 @@
 [project]
-name = "service-a"
+name = "example-service"
 version = "0.1.0"
 description = ""
-authors = [
-{name = "Tim Elsener",email = "tim.elsener@ecologic.ch"}
-]
+
+readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-"opentelemetry-exporter-otlp (>=1.33.1,<2.0.0)",
-"opentelemetry-distro (>=0.54b1,<0.55)"
+"flask (>=3.1.1,<4.0.0)"
 ]
+
+[tool.poetry.dependencies]
+common-lib = {path = '../common-lib'}
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

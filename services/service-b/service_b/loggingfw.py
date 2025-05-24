@@ -1,6 +1,3 @@
-# Import the logging module.
-import logging
-
 # Import the function to set the global logger provider from the OpenTelemetry logs module.
 from opentelemetry._logs import set_logger_provider
 
@@ -15,6 +12,9 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 
 # Import the Resource class from the OpenTelemetry SDK resources module.
 from opentelemetry.sdk.resources import Resource
+
+# Import the logging module.
+import logging
 
 class CustomLogFW:
     """
