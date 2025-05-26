@@ -29,9 +29,18 @@ tests folder and readme.md can be deleted we are not using it, we are using for 
 
 we are using poetry only for package-mode:
 
+**init**.py can be deleted not anymore neccesray
+
 ```
 [tool.poetry]
 package-mode = false
+```
+
+ìnclude common-lib
+
+```
+[tool.poetry.dependencies]
+common-lib = {path = '../common-lib'}
 ```
 
 All meta data under [project] can be removed from pyproject.toml
