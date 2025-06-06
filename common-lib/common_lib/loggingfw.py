@@ -21,12 +21,11 @@ class CustomLogFW:
     CustomLogFW sets up logging using OpenTelemetry with a specified service name and instance ID.
     """
     
-    def __init__(self, service_name, instance_id):
+    def __init__(self, service_name):
         """
         Initialize the CustomLogFW with a service name and instance ID.
 
         :param service_name: Name of the service for logging purposes.
-        :param instance_id: Unique instance ID of the service.
         """
         # Create an instance of LoggerProvider with a Resource object that includes
         # service name and instance ID, identifying the source of the logs.
@@ -34,7 +33,6 @@ class CustomLogFW:
             resource=Resource.create(
                 {
                     "service.name": service_name,
-                    "service.instance.id": instance_id,
                 }
             )
         )

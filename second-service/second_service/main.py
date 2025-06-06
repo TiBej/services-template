@@ -3,7 +3,7 @@ from common_lib.loggingfw import CustomLogFW
 from flask import Flask, request, session, jsonify
 import logging
 
-logFW = CustomLogFW(service_name='second-service', instance_id='1')
+logFW = CustomLogFW(service_name='second-service')
 handler = logFW.setup_logging()
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger().addHandler(handler)

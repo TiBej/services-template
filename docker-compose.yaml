@@ -5,21 +5,28 @@ services:
       args:
         SERVICE_NAME: first-service
     depends_on:
+      - rabbitmq
       - otel-collector
     ports:
       - "6001:5001"
-    networks:
-      - loki
   second-service:
     build:
       args:
         SERVICE_NAME: first-service
     depends_on:
+      - rabbitmq
       - otel-collector
     ports:
       - "6002:5002"
-    networks:
-      - loki
+  rabbitmq:
+    image: rabbitmq:4-management
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
   otel-collector:
     image: otel/opentelemetry-collector:latest
     volumes:
@@ -31,8 +38,6 @@ services:
       - "4318:4318" #http
     depends_on:
       - loki
-    networks:
-      - loki
   loki:
     image: grafana/loki:main
     ports:
@@ -40,9 +45,6 @@ services:
     volumes:
       - ./loki-config.yaml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
-    networks:
-      - loki
-
   grafana:
     image: grafana/grafana:11.6.0
     environment:
@@ -70,8 +72,3 @@ services:
           editable: false
         EOF
         /run.sh
-    networks:
-      - loki
-
-networks:
-  loki:
