@@ -1,5 +1,16 @@
 version: "3"
 services:
+  service-one:
+    build:
+      args:
+        SERVICE_NAME: first-service
+    depends_on:
+      - otel-collector
+    ports:
+      - "6001:5001"
+    networks:
+      - loki
+
   otel-collector:
     image: otel/opentelemetry-collector:latest
     volumes:
