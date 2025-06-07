@@ -1,4 +1,4 @@
-from common_lib.loggingfw import CustomLogFW
+from common.utilities.loggingfw import CustomLogFW
 
 from flask import Flask, request, session, jsonify
 import logging
