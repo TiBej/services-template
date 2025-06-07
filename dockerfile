@@ -3,7 +3,7 @@ ARG SERVICE_NAME
 
 WORKDIR /app
 
-COPY common-lib ./common-lib
+COPY common ./common
 COPY ${SERVICE_NAME} ./${SERVICE_NAME}
 WORKDIR /app/${SERVICE_NAME}
 

@@ -1,19 +1,13 @@
 [project]
-name = "second-service"
+name = "common_lib"
 version = "0.1.0"
 description = ""
 
 requires-python = ">=3.13"
 dependencies = [
-"flask (>=3.1.1,<4.0.0)",
-"common",
+"opentelemetry-exporter-otlp (>=1.33.1,<2.0.0)",
+"opentelemetry-distro (>=0.54b1,<0.55)"
 ]
-
-[tool.poetry.dependencies]
-common = {path = '../common'}
-
-[project.scripts]
-start = "second_service.main:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -36,11 +36,11 @@ we are using poetry only for package-mode:
 package-mode = false
 ```
 
-ìnclude common-lib
+ìnclude common
 
 ```
 [tool.poetry.dependencies]
-common-lib = {path = '../common-lib'}
+common = {path = '../common'}
 ```
 
 All meta data under [project] can be removed from pyproject.toml
