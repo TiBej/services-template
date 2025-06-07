@@ -155,7 +155,7 @@ files = [
 ]
 
 [[package]]
-name = "common-lib"
+name = "common"
 version = "0.1.0"
 description = ""
 optional = false
@@ -170,7 +170,7 @@ opentelemetry-exporter-otlp = ">=1.33.1,<2.0.0"
 
 [package.source]
 type = "directory"
-url = "../common-lib"
+url = "../common"
 
 [[package]]
 name = "deprecated"

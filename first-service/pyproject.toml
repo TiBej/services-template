@@ -6,11 +6,11 @@ description = ""
 requires-python = ">=3.13"
 dependencies = [
 "flask (>=3.1.1,<4.0.0)",
-"common-lib",
+"common",
 ]
 
 [tool.poetry.dependencies]
-common-lib = {path = '../common-lib'}
+common = {path = '../common'}
 
 [project.scripts]
 start = "first_service.main:main"
