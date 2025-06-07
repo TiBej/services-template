@@ -12,7 +12,7 @@ services:
   second-service:
     build:
       args:
-        SERVICE_NAME: first-service
+        SERVICE_NAME: second-service
     depends_on:
       - rabbitmq
       - otel-collector
