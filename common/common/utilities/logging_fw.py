@@ -16,14 +16,14 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 # Import the Resource class from the OpenTelemetry SDK resources module.
 from opentelemetry.sdk.resources import Resource
 
-class CustomLogFW:
+class LoggingFW:
     """
-    CustomLogFW sets up logging using OpenTelemetry with a specified service name and instance ID.
+    LoggingFW sets up logging using OpenTelemetry with a specified service name and instance ID.
     """
     
     def __init__(self, service_name):
         """
-        Initialize the CustomLogFW with a service name and instance ID.
+        Initialize the LoggingFW with a service name and instance ID.
 
         :param service_name: Name of the service for logging purposes.
         """

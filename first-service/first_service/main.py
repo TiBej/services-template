@@ -1,9 +1,9 @@
-from common.utilities.loggingfw import CustomLogFW
+from common.utilities.loggingfw import LoggingFW
 
 from flask import Flask, request, session, jsonify
 import logging
 
-logFW = CustomLogFW(service_name='first-service')
+logFW = LoggingFW(service_name='first-service')
 handler = logFW.setup_logging()
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger().addHandler(handler)
