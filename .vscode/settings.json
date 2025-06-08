@@ -1,4 +1,5 @@
 {
+  "python.analysis.typeCheckingMode": "strict",
   "explorer.excludeGitIgnore": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -13,6 +14,9 @@
     "editor.formatOnSave": false
   },
   "[dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }
