@@ -1,0 +1,22 @@
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [first-service, second-service]
+    steps:
+      - name: Linting with Ruff
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        run: uvx ruff check common ${{ matrix.service }}
+
+  formatting:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [first-service, second-service]
+    steps:
+      - name: Formatting Check with Ruff
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        run: uvx ruff format --check common ${{ matrix.service }}
