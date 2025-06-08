@@ -1,5 +1,4 @@
 {
-  "python.languageServer": "None",
   "explorer.excludeGitIgnore": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
