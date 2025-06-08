@@ -1,7 +1,8 @@
 runs:
   using: composite
   steps:
-    - name: "Install UV"
+    - uses: actions/checkout@v4
+    - name: Setup UV
       uses: astral-sh/setup-uv@v5
       with:
         version: "0.7.12"
