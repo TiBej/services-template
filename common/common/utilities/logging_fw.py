@@ -16,11 +16,12 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 # Import the Resource class from the OpenTelemetry SDK resources module.
 from opentelemetry.sdk.resources import Resource
 
+
 class LoggingFW:
     """
     LoggingFW sets up logging using OpenTelemetry with a specified service name and instance ID.
     """
-    
+
     def __init__(self, service_name):
         """
         Initialize the LoggingFW with a service name and instance ID.
@@ -53,6 +54,8 @@ class LoggingFW:
         self.logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
 
         # Create a LoggingHandler with the specified logger provider and log level set to NOTSET.
-        handler = LoggingHandler(level=logging.NOTSET, logger_provider=self.logger_provider)
+        handler = LoggingHandler(
+            level=logging.NOTSET, logger_provider=self.logger_provider
+        )
 
         return handler

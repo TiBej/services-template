@@ -1,25 +1,28 @@
-from common.utilities.logging_fw import LoggingFW
-
-from flask import Flask, request, session, jsonify
 import logging
 
+from flask import Flask
 
-logFW = LoggingFW(service_name='first-service')
+from common.utilities.logging_fw import LoggingFW
+
+logFW = LoggingFW(service_name="first-service")
 handler = logFW.setup_logging()
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger().addHandler(handler)
 
 app = Flask(__name__)
 
-@app.route('/trigger_log', methods=['GET'])
+
+@app.route("/trigger_log", methods=["GET"])
 def bug():
     logging.info("bug is incoming")
     logging.critical("critical message")
     logging.error("Triggering bug...")
     return "Log triggered", 200
 
+
 def main():
     app.run(host="0.0.0.0", port=5001)
 
-if __name__ == '__main__':
-    main();
+
+if __name__ == "__main__":
+    main()
