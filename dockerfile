@@ -7,8 +7,7 @@ COPY common ./common
 COPY ${SERVICE_NAME} ./${SERVICE_NAME}
 WORKDIR /app/${SERVICE_NAME}
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install
+RUN pip install uv
+RUN uv sync
 
-CMD ["poetry", "run", "start"]
+CMD ["uv", "run", "main.py"]

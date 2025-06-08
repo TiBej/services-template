@@ -1,20 +1,11 @@
 [project]
 name = "second-service"
 version = "0.1.0"
-description = ""
-
 requires-python = ">=3.13"
 dependencies = [
-"flask (>=3.1.1,<4.0.0)",
 "common",
+"flask (>=3.1.1,<4.0.0)",
 ]
 
-[tool.poetry.dependencies]
-common = {path = '../common'}
-
-[project.scripts]
-start = "second_service.main:main"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv.sources]
+common = { path = "../common", editable = true }
