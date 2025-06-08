@@ -4,8 +4,8 @@ ARG SERVICE_NAME
 WORKDIR /app
 
 COPY common ./common
-COPY ${SERVICE_NAME} ./${SERVICE_NAME}
-WORKDIR /app/${SERVICE_NAME}
+COPY first-service ./first-service
+WORKDIR /app/first-service
 
 RUN pip install uv
 RUN uv sync

@@ -1,8 +1,7 @@
 services:
   first-service:
     build:
-      args:
-        SERVICE_NAME: first-service
+      context: ./first-service
     restart: always
     depends_on:
       - rabbitmq
@@ -11,8 +10,7 @@ services:
       - "6001:5001"
   second-service:
     build:
-      args:
-        SERVICE_NAME: second-service
+      context: ./second-service
     restart: always
     depends_on:
       - rabbitmq
