@@ -44,7 +44,8 @@ jobs:
         working-directory: ${{ matrix.project }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v5
       - name: Check typings with Pyright
         run: uv run pyright .
   build:
