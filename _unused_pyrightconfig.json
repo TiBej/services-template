@@ -5,11 +5,11 @@
     },
     {
       "root": "first-service",
-      "extraPaths": ["common"]
+      "extraPaths": ["common/src"]
     },
     {
       "root": "second-service",
-      "extraPaths": ["common"]
+      "extraPaths": ["common/src"]
     }
   ]
 }
