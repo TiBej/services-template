@@ -1,6 +1,6 @@
 from typing import final
 
-from events.base_event import BaseEvent
+from .base_event import BaseEvent
 
 
 @final
