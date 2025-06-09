@@ -9,7 +9,8 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v5
       - name: Check if uv.lock is in sync
         run: uv lock --locked --directory ${{ matrix.project }}
   linting:
@@ -20,9 +21,10 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v5
       - name: Linting with Ruff
-        run: uv run ruff check ${{ matrix.project }}
+        run: uvx ruff check ${{ matrix.project }}
   formatting:
     runs-on: ubuntu-latest
     needs: [lock_file]
@@ -31,9 +33,10 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v5
       - name: Formatting Check with Ruff
-        run: uv run ruff format --check ${{ matrix.project }}
+        run: uvx ruff format --check ${{ matrix.project }}
   typing:
     runs-on: ubuntu-latest
     needs: [lock_file]
@@ -42,7 +45,7 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - uses: ./.github/actions/setup
       - name: Check typings with Pyright
         run: uv run pyright ${{ matrix.project }}
   build:
@@ -53,6 +56,7 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-uv
+      - name: Setup UV
+        uses: astral-sh/setup-uv@v5
       - name: Building
         run: uv build ${{ matrix.project }}
