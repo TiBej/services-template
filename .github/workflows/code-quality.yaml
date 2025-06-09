@@ -20,8 +20,7 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup UV
-        uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup-uv
       - name: Linting with Ruff
         run: uv run ruff check ${{ matrix.project }}
   formatting:
@@ -32,8 +31,7 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup UV
-        uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup-uv
       - name: Formatting Check with Ruff
         run: uv run ruff format --check ${{ matrix.project }}
   typing:
@@ -44,8 +42,7 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup UV
-        uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup-uv
       - name: Check typings with Pyright
         run: uv run pyright ${{ matrix.project }}
   build:
@@ -56,7 +53,6 @@ jobs:
         project: [common, first-service, second-service]
     steps:
       - uses: actions/checkout@v4
-      - name: Setup UV
-        uses: astral-sh/setup-uv@v5
+      - uses: ./.github/actions/setup-uv
       - name: Building
         run: uv build ${{ matrix.project }}
