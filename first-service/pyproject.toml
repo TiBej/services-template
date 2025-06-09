@@ -9,3 +9,9 @@ dependencies = [
 
 [tool.uv.sources]
 common = { path = "../common", editable = true }
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.401",
+    "ruff>=0.11.13",
+]
