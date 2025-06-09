@@ -1,8 +1,7 @@
-name: "Setup UV with caching"
-description: "Sets up UV with dependency caching enabled."
 runs:
   using: composite
   steps:
-    - uses: astral-sh/setup-uv@v5
-      with:
-        cache: true
+    - name: "Install UV"
+      shell: bash
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
