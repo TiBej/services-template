@@ -1,5 +1,4 @@
 {
-  "python.analysis.typeCheckingMode": "strict",
   "explorer.excludeGitIgnore": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -18,6 +17,5 @@
   },
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "python.analysis.extraPaths": ["./common/src"]
+  }
 }

@@ -18,6 +18,6 @@ dev = [
 
 [tool.pyright]
 typeCheckingMode = "strict"
-venvPath = "./first-service"
+venvPath = "."
 venv = ".venv"
 stubPath = "../common/src" # required to resolve common dependency
