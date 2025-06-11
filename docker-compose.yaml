@@ -1,7 +1,7 @@
 services:
-  first-service:
+  api-service:
     build:
-      dockerfile: ./first-service/dockerfile
+      dockerfile: ./api-service/dockerfile
     restart: always
     depends_on:
       - rabbitmq

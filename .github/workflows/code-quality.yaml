@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [common, first-service, second-service]
+        project: [common, api-service, second-service]
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -21,7 +21,7 @@ jobs:
     needs: [lock_file]
     strategy:
       matrix:
-        project: [common, first-service, second-service]
+        project: [common, api-service, second-service]
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -38,7 +38,7 @@ jobs:
     needs: [lock_file]
     strategy:
       matrix:
-        project: [common, first-service, second-service]
+        project: [common, api-service, second-service]
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -53,7 +53,7 @@ jobs:
     needs: [lint_format, typing]
     strategy:
       matrix:
-        project: [common, first-service, second-service]
+        project: [common, api-service, second-service]
     defaults:
       run:
         working-directory: ${{ matrix.project }}
