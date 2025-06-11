@@ -4,10 +4,10 @@
       "path": "common"
     },
     {
-      "path": "second-service"
+      "path": "first-service"
     },
     {
-      "path": "first-service"
+      "path": "second-service"
     },
     {
       "name": "root",
@@ -31,7 +31,8 @@
       "editor.defaultFormatter": "charliermarsh.ruff"
     },
     "[toml]": {
-      "editor.formatOnSave": false
+      "editor.formatOnSave": false,
+      "editor.defaultFormatter": "tamasfe.even-better-toml"
     },
     "[dockerfile]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -45,7 +46,8 @@
       "charliermarsh.ruff",
       "esbenp.prettier-vscode",
       "ms-python.python",
-      "foxundermoon.shell-format"
+      "foxundermoon.shell-format",
+      "tamasfe.even-better-toml"
     ]
   }
 }

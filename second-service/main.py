@@ -1,8 +1,7 @@
 import logging
 
-from flask import Flask
-
 from common.utilities.logging_fw import LoggingFW
+from flask import Flask
 
 logFW = LoggingFW(service_name="second-service")
 handler = logFW.setup_logging()

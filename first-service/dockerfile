@@ -1,5 +1,6 @@
-FROM python:3.13-alpine3.21
-ARG SERVICE_NAME
+FROM python:3.13-slim
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
@@ -8,6 +9,6 @@ COPY first-service ./first-service
 WORKDIR /app/first-service
 
 RUN pip install uv
-RUN uv sync
+RUN uv sync --frozen --no-cache
 
-CMD ["uv", "run", "main.py"]
+CMD ["uv", "run", "fastapi", "run", "main.py", "--port", "5001"]

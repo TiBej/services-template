@@ -1,7 +1,7 @@
 services:
   first-service:
     build:
-      context: ./first-service
+      dockerfile: ./first-service/dockerfile
     restart: always
     depends_on:
       - rabbitmq
