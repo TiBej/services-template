@@ -1,6 +1,7 @@
 import uuid
+from dataclasses import dataclass, field
 
 
+@dataclass(kw_only=True)
 class BaseEvent:
-    def __init__(self):
-        self.correlation_id: uuid.UUID = uuid.uuid4()
+    correlation_id: str = field(default_factory=lambda: str(uuid.uuid4()))

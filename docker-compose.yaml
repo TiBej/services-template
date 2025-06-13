@@ -2,21 +2,14 @@ services:
   api-service:
     build:
       dockerfile: ./api-service/dockerfile
-    restart: always
+    restart: no
     depends_on:
       - rabbitmq
       - otel-collector
     ports:
       - "6001:5001"
-  second-service:
-    build:
-      context: ./second-service
-    restart: always
-    depends_on:
-      - rabbitmq
-      - otel-collector
-    ports:
-      - "6002:5002"
+    environment:
+      RABBITMQ_HOST: rabbitmq 
   rabbitmq:
     image: rabbitmq:4-management
     restart: always
