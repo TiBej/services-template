@@ -1,21 +1,30 @@
 import logging
 
 from common.models.events.mail_triggered import MailTriggeredEvent
+from common.utilities.correlation_id_context import set_correlation_id
+from common.utilities.rabbitmq import RabbitMQ
 from fastapi import APIRouter
-
-from rabbitmq import RabbitMQ
 
 router = APIRouter()
 
 
 @router.get("/users/{username}", tags=["users"])
 async def read_user(username: str):
-    logging.info("bug is incoming")
-    logging.critical("critical message")
-    logging.error("Triggering bug...")
-    rabbitmq = RabbitMQ()
-    triggeredEvent = MailTriggeredEvent(
-        subject="test", body="test", recipient_email="test"
-    )
-    rabbitmq.publish(triggeredEvent)
+    with set_correlation_id():
+        logging.info("bug is incoming")
+        logging.critical("critical message")
+        logging.error("Triggering bug...")
+        rabbitmq = RabbitMQ()
+        triggeredEvent = MailTriggeredEvent(
+            subject="test", body="test", recipient_email="test"
+        )
+        rabbitmq.publish(triggeredEvent)
     return {"username": username}
+
+
+@router.get("/log")
+async def log():
+    logging.info("shouldn't have a concurrency id")
+    logging.info("shouldn't have a concurrency id")
+    logging.info("shouldn't have a concurrency id")
+    return {"hello": "you"}

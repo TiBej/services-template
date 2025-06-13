@@ -1,5 +1,7 @@
 # Import the logging module.
 import logging
+from contextvars import ContextVar
+from typing import Any
 
 # Import the function to set the global logger provider from the OpenTelemetry logs module.
 from opentelemetry._logs import set_logger_provider
@@ -16,6 +18,22 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 # Import the Resource class from the OpenTelemetry SDK resources module.
 from opentelemetry.sdk.resources import Resource
 
+ctx_correlation_id = ContextVar("correlation_id", default="")
+
+
+class InjectingFilter(logging.Filter):
+    """
+    A filter which injects context-specific information into logs
+    """
+
+    def filter(self, record: Any):
+        if ctx_correlation_id.get() != "":
+            record.correlation = f"[{ctx_correlation_id.get()}]"
+        else:
+            record.correlation = ""
+
+        return True
+
 
 class LoggingFW:
     """
@@ -30,6 +48,7 @@ class LoggingFW:
         """
         # Create an instance of LoggerProvider with a Resource object that includes
         # service name and instance ID, identifying the source of the logs.
+        self.service_name = service_name
         self.logger_provider: LoggerProvider = LoggerProvider(
             resource=Resource.create(
                 {
@@ -48,7 +67,7 @@ class LoggingFW:
         set_logger_provider(self.logger_provider)
 
         # Create an instance of OTLPLogExporter with insecure connection.
-        exporter = OTLPLogExporter(endpoint="otel-collector:4317", insecure=True)
+        exporter = OTLPLogExporter(endpoint="localhost:4317", insecure=True)
 
         # Add a BatchLogRecordProcessor to the logger provider with the exporter.
         self.logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
@@ -57,5 +76,13 @@ class LoggingFW:
         handler = LoggingHandler(
             level=logging.NOTSET, logger_provider=self.logger_provider
         )
+
+        formatter = logging.Formatter(
+            f"%(correlation)s [{self.service_name}] ::: %(message)s"
+        )
+        handler.setFormatter(formatter)
+
+        f = InjectingFilter()
+        handler.addFilter(f)
 
         return handler
