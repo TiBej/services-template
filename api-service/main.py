@@ -1,9 +1,6 @@
 import logging
-import threading
 
-from common.models.events.mail_triggered import MailTriggeredEvent
 from common.utilities.logging_fw import LoggingFW
-from common.utilities.rabbitmq import RabbitMQ
 from fastapi import FastAPI
 
 from api.middlewares.logging_mw import logging_mw
@@ -19,15 +16,3 @@ app = FastAPI(title="api-service")
 
 app.include_router(users.router)
 app.middleware("http")(logging_mw)
-
-
-def wrapped():
-    def f(event: MailTriggeredEvent):
-        raise Exception("Test Exception")
-
-    rabbitMQ = RabbitMQ()
-    rabbitMQ.consume(MailTriggeredEvent, f)
-    pass
-
-
-threading.Thread(target=wrapped).start()

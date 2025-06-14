@@ -18,11 +18,3 @@ async def read_user(username: str):
     )
     rabbitmq.publish(triggeredEvent)
     return {"username": username}
-
-
-@router.get("/log")
-async def log():
-    logging.info("shouldn't have a concurrency id")
-    logging.info("shouldn't have a concurrency id")
-    logging.info("shouldn't have a concurrency id")
-    return {"hello": "you"}

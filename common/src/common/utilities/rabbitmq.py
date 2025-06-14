@@ -61,6 +61,7 @@ class RabbitMQ:
             event_instance = message_type(**event_data)
             # process
             try:
+                logging.info(f"Consuming {exchange_name}")
                 logging.info({body})
                 func(event_instance)
             except Exception as e:
