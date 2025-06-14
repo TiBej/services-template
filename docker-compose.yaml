@@ -9,7 +9,7 @@ services:
     ports:
       - "6001:5001"
     environment:
-      RABBITMQ_HOST: rabbitmq 
+      RABBITMQ_HOST: rabbitmq
   rabbitmq:
     image: rabbitmq:4-management
     restart: always

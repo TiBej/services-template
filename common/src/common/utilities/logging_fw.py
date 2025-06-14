@@ -1,6 +1,5 @@
 # Import the logging module.
 import logging
-from contextvars import ContextVar
 from typing import Any
 
 # Import the function to set the global logger provider from the OpenTelemetry logs module.
@@ -18,7 +17,7 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 # Import the Resource class from the OpenTelemetry SDK resources module.
 from opentelemetry.sdk.resources import Resource
 
-ctx_correlation_id = ContextVar("correlation_id", default="")
+from .correlation_id import ctx_correlation_id
 
 
 class InjectingFilter(logging.Filter):
