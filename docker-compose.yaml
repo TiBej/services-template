@@ -2,7 +2,7 @@ services:
   api-service:
     build:
       dockerfile: ./api-service/dockerfile
-    restart: no
+    restart: unless-stopped
     depends_on:
       - rabbitmq
       - otel-collector
@@ -20,7 +20,7 @@ services:
   consumer-service:
     build:
       dockerfile: ./consumer-service/dockerfile
-    restart: no
+    restart: unless-stopped
     depends_on:
       - rabbitmq
       - otel-collector
@@ -35,7 +35,7 @@ services:
       OTEL_PORT: ${OTEL_PORT}
   rabbitmq:
     image: rabbitmq:4-management
-    restart: always
+    restart: unless-stopped
     ports:
       - 5672:5672
       - 15672:15672
@@ -44,6 +44,7 @@ services:
       RABBITMQ_DEFAULT_PASS: admin
   otel-collector:
     image: otel/opentelemetry-collector:latest
+    restart: unless-stopped
     volumes:
       - ./otel-config.yaml:/etc/otel/config.yaml
     command:
@@ -55,6 +56,7 @@ services:
       - loki
   loki:
     image: grafana/loki:main
+    restart: unless-stopped
     ports:
       - "3100:3100"
     volumes:
@@ -62,6 +64,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
   grafana:
     image: grafana/grafana:11.6.0
+    restart: unless-stopped
     environment:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_ANONYMOUS_ENABLED=true
