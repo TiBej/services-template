@@ -34,9 +34,9 @@ class InjectingFilter(logging.Filter):
         return True
 
 
-class LoggingFW:
+class OtelLogger:
     """
-    LoggingFW sets up logging using OpenTelemetry with a specified service name and instance ID.
+    Sets up logging with specified service name, environment and filter for correlation ID
     """
 
     def __init__(
@@ -46,13 +46,6 @@ class LoggingFW:
         otel_host: str,
         otel_port: int,
     ):
-        """
-        Initialize the LoggingFW with a service name and instance ID.
-
-        :param service_name: Name of the service for logging purposes.
-        """
-        # Create an instance of LoggerProvider with a Resource object that includes
-        # service name and instance ID, identifying the source of the logs.
         self.service_name = service_name
         self.otel_host = otel_host
         self.otel_port = otel_port
@@ -67,9 +60,6 @@ class LoggingFW:
         )
 
     def get_handler(self):
-        """
-        Set up logging handler for OpenTelemetry
-        """
         # Set the created LoggerProvider as the global logger provider.
         set_logger_provider(self.logger_provider)
 
