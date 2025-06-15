@@ -7,6 +7,8 @@ from common.models.events.base_event import BaseEvent
 from common.utilities.correlation_id import set_correlation_id
 from common.utilities.rabbitmq import RabbitMQ
 
+logger = logging.getLogger(__name__)
+
 
 class BaseConsumer[B: BaseEvent]:
     """
@@ -20,7 +22,7 @@ class BaseConsumer[B: BaseEvent]:
     async def handle_event(self, event: B) -> None:
         """Handle incoming events and set the correlation ID."""
         with set_correlation_id(event.correlation_id):
-            logging.info(f"Consuming {event}")
+            logger.info(f"Consuming {event}")
             await self.consume(event)
 
     @abstractmethod

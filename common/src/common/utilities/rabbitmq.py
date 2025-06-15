@@ -9,6 +9,8 @@ import pika
 
 from common.models.events.base_event import BaseEvent
 
+logger = logging.getLogger(__name__)
+
 
 class RabbitMQ:
     T = TypeVar("T", bound=BaseEvent)
@@ -65,7 +67,7 @@ class RabbitMQ:
             try:
                 func(event_instance)
             except Exception as e:
-                logging.exception(f"failed processing message: {e}")
+                logger.exception(f"failed processing message: {e}")
                 if not self.channel:
                     raise Exception("Connection is not established.")
 
@@ -117,4 +119,4 @@ class RabbitMQ:
                 correlation_id=event.correlation_id,
             ),
         )
-        logging.info(f"published message: {message}")
+        logger.info(f"published message: {message}")
