@@ -39,7 +39,13 @@ class LoggingFW:
     LoggingFW sets up logging using OpenTelemetry with a specified service name and instance ID.
     """
 
-    def __init__(self, service_name: str):
+    def __init__(
+        self,
+        service_name: str,
+        service_environment: str,
+        otel_host: str,
+        otel_port: int,
+    ):
         """
         Initialize the LoggingFW with a service name and instance ID.
 
@@ -48,25 +54,29 @@ class LoggingFW:
         # Create an instance of LoggerProvider with a Resource object that includes
         # service name and instance ID, identifying the source of the logs.
         self.service_name = service_name
+        self.otel_host = otel_host
+        self.otel_port = otel_port
+
         self.logger_provider: LoggerProvider = LoggerProvider(
             resource=Resource.create(
                 {
                     "service.name": service_name,
+                    "service.environment": service_environment,
                 }
             )
         )
 
-    def setup_logging(self):
+    def get_handler(self):
         """
-        Set up the logging configuration.
-
-        :return: LoggingHandler instance configured with the logger provider.
+        Set up logging handler for OpenTelemetry
         """
         # Set the created LoggerProvider as the global logger provider.
         set_logger_provider(self.logger_provider)
 
         # Create an instance of OTLPLogExporter with insecure connection.
-        exporter = OTLPLogExporter(endpoint="localhost:4317", insecure=True)
+        exporter = OTLPLogExporter(
+            endpoint=f"{self.otel_host}:{self.otel_port}", insecure=True
+        )
 
         # Add a BatchLogRecordProcessor to the logger provider with the exporter.
         self.logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
@@ -81,7 +91,6 @@ class LoggingFW:
         )
         handler.setFormatter(formatter)
 
-        f = InjectingFilter()
-        handler.addFilter(f)
+        handler.addFilter(InjectingFilter())
 
         return handler

@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from abc import abstractmethod
 from typing import Type
 
@@ -12,14 +13,14 @@ class BaseConsumer[B: BaseEvent]:
     Base class for all consumers, handling correlation IDs and event consumption.
     """
 
-    def __init__(self, event_type: Type[B]):
-        self.rabbitmq = RabbitMQ()
+    def __init__(self, event_type: Type[B], rabbitmq: RabbitMQ):
         self.event_type = event_type
+        self.rabbitmq = rabbitmq
 
     async def handle_event(self, event: B) -> None:
         """Handle incoming events and set the correlation ID."""
-        await self.consume(event)
         with set_correlation_id(event.correlation_id):
+            logging.info(f"Consuming {event}")
             await self.consume(event)
 
     @abstractmethod

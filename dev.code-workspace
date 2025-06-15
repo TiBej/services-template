@@ -39,6 +39,9 @@
     },
     "[ignore]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dotenv]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
     }
   },
   "extensions": {

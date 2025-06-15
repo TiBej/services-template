@@ -2,7 +2,6 @@
 
 import json
 import logging
-import os
 import time
 from typing import Callable, Type, TypeVar
 
@@ -14,11 +13,14 @@ from common.models.events.base_event import BaseEvent
 class RabbitMQ:
     T = TypeVar("T", bound=BaseEvent)
 
-    def __init__(self):
-        self.user = os.getenv("RABBITMQ_USER", "admin")
-        self.password = os.getenv("RABBITMQ_PASSWORD", "admin")
-        self.host = os.getenv("RABBITMQ_HOST", "localhost")
-        self.port = int(os.getenv("RABBITMQ_PORT", 5672))
+    def __init__(
+        self, service_name: str, user: str, password: str, host: str, port: int
+    ):
+        self.service_name = service_name
+        self.user = user
+        self.password = password
+        self.host = host
+        self.port = port
         self.connection = None
         self.channel = None
         self.connect()
@@ -47,12 +49,12 @@ class RabbitMQ:
         self.channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
 
         # processing queue
-        processing_queue_name = f"api-service-{exchange_name}"
+        processing_queue_name = f"{self.service_name}-{exchange_name}"
         self.channel.queue_declare(queue=processing_queue_name, durable=True)
         self.channel.queue_bind(exchange=exchange_name, queue=processing_queue_name)
 
         # error queue
-        error_queue_name = f"api-service-{exchange_name}-error"
+        error_queue_name = f"{self.service_name}-{exchange_name}-error"
         self.channel.queue_declare(queue=error_queue_name, durable=True)
 
         def callback(ch, method, properties, body: str):
@@ -61,8 +63,6 @@ class RabbitMQ:
             event_instance = message_type(**event_data)
             # process
             try:
-                logging.info(f"Consuming {exchange_name}")
-                logging.info({body})
                 func(event_instance)
             except Exception as e:
                 logging.exception(f"failed processing message: {e}")
@@ -103,7 +103,7 @@ class RabbitMQ:
             raise Exception("Connection is not established.")
 
         exchange_name = f"{event.__module__}.{event.__class__.__name__}".lower()
-        self.channel.exchange_declare(exchange="logs", exchange_type="fanout")
+        self.channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
 
         message = json.dumps(event.__dict__)
 
