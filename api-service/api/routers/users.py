@@ -1,7 +1,7 @@
 import logging
 
-from common.models.events.mail_triggered import MailTriggeredEvent
-from common.utilities.rabbitmq import RabbitMQ
+from common.events.mail_triggered import MailTriggeredEvent
+from common.rabbitmq.rabbitmq import RabbitMQ
 from fastapi import APIRouter, Depends
 
 router = APIRouter()

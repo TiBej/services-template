@@ -7,7 +7,7 @@ from typing import Callable, Type, TypeVar
 
 import pika
 
-from common.models.events.base_event import BaseEvent
+from common.events.base_event import BaseEvent
 
 logger = logging.getLogger(__name__)
 

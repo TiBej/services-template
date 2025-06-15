@@ -2,7 +2,7 @@ import logging
 import uuid
 from typing import Awaitable, Callable
 
-from common.utilities.correlation_id import set_correlation_id
+from common.logging.correlation_id import set_correlation_id
 from fastapi import FastAPI, HTTPException, Request, Response
 
 app = FastAPI()

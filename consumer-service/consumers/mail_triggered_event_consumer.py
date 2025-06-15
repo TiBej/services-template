@@ -1,8 +1,8 @@
 import asyncio
 import logging
 
-from common.models.events.mail_triggered import MailTriggeredEvent
-from common.utilities.base_consumer import BaseConsumer
+from common.events.mail_triggered import MailTriggeredEvent
+from common.rabbitmq.base_consumer import BaseConsumer
 
 logger = logging.getLogger(__name__)
 

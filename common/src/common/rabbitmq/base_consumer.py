@@ -3,9 +3,10 @@ import logging
 from abc import abstractmethod
 from typing import Type
 
-from common.models.events.base_event import BaseEvent
-from common.utilities.correlation_id import set_correlation_id
-from common.utilities.rabbitmq import RabbitMQ
+from common.events.base_event import BaseEvent
+from common.logging.correlation_id import set_correlation_id
+
+from .rabbitmq import RabbitMQ
 
 logger = logging.getLogger(__name__)
 
