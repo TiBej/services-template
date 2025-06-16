@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "common": true,
+    "api-service": true,
+    "consumer-service": true,
+    "infrastructure": true
+  }
+}

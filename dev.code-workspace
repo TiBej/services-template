@@ -18,12 +18,6 @@
     }
   ],
   "settings": {
-    "files.exclude": {
-      "common": true,
-      "api-service": true,
-      "consumer-service": true,
-      "infrastructure": true
-    },
     "explorer.excludeGitIgnore": true,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",

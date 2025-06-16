@@ -1,0 +1,18 @@
+services:
+  consumer-service:
+    build:
+      dockerfile: infrastructure/services/.Dockerfile
+      context: ../
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - otel-collector
+    environment:
+      SERVICE_NAME: consumer-service
+      SERVICE_ENVIRONMENT: ${SERVICE_ENVIRONMENT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      OTEL_HOST: ${OTEL_HOST}
+      OTEL_PORT: ${OTEL_PORT}
