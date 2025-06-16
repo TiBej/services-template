@@ -11,5 +11,8 @@ def set_correlation_id(correlation_id: str | None = None):
     Within this context logging includes correlation id
     """
     correlation_id = correlation_id or str(uuid.uuid4())
-    ctx_correlation_id.set(correlation_id)
-    yield correlation_id
+    token = ctx_correlation_id.set(correlation_id)
+    try:
+        yield correlation_id
+    finally:
+        ctx_correlation_id.reset(token)
