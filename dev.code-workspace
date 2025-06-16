@@ -10,6 +10,9 @@
       "path": "consumer-service"
     },
     {
+      "path": "infrastructure"
+    },
+    {
       "name": "root",
       "path": "."
     }
@@ -18,7 +21,8 @@
     "files.exclude": {
       "common": true,
       "api-service": true,
-      "consumer-service": true
+      "consumer-service": true,
+      "infrastructure": true
     },
     "explorer.excludeGitIgnore": true,
     "editor.formatOnSave": true,
