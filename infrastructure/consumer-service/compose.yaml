@@ -1,8 +1,8 @@
 services:
   consumer-service:
     build:
-      dockerfile: infrastructure/services/.Dockerfile
-      context: ../
+      dockerfile: infrastructure/consumer-service/Dockerfile
+      context: ../../
     restart: unless-stopped
     depends_on:
       - rabbitmq

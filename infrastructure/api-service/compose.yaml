@@ -1,8 +1,8 @@
 services:
   api-service:
     build:
-      dockerfile: infrastructure/services/.Dockerfile
-      context: ../
+      dockerfile: infrastructure/api-service/Dockerfile
+      context: ../../
     restart: unless-stopped
     depends_on:
       - rabbitmq
