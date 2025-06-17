@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class BaseConsumer[B: BaseEvent]:
     """
-    Base class for all consumers, handling correlation IDs and event consumption.
+    Base class for all consumers, handling correlation id's and event consumption.
     """
 
     def __init__(self, event_type: Type[B], rabbitmq: RabbitMQ):
@@ -21,7 +21,7 @@ class BaseConsumer[B: BaseEvent]:
         self.rabbitmq = rabbitmq
 
     async def handle_event(self, event: B) -> None:
-        """Handle incoming events and set the correlation ID."""
+        """Handle incoming events and set the correlation id."""
         with set_correlation_id(event.correlation_id):
             logger.info(f"Consuming {event}")
             await self.consume(event)

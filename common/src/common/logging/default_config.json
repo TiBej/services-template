@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "default": {
+      "format": "[%(correlation_id)s] [api-service] ::: %(message)s"
+    },
+    "simple": { "format": "%(levelname)s: %(message)s" }
+  },
+  "filters": {
+    "correlation_id_filter": {
+      "()": "common.logging.correlation_id.CorrelationIdFilter"
+    }
+  },
+  "handlers": {
+    "otel": {
+      "()": "common.logging.otel_handler.OtelHandler",
+      "filters": ["correlation_id_filter"],
+      "formatter": "default",
+      "service_name": "idk-service",
+      "service_environment": "development",
+      "otel_host": "localhost",
+      "otel_port": 4317
+    },
+    "stdrr": {
+      "class": "logging.StreamHandler",
+      "filters": ["correlation_id_filter"],
+      "formatter": "simple",
+      "stream": "ext://sys.stdout"
+    }
+  },
+  "loggers": {
+    "root": {
+      "handlers": ["otel", "stdrr"],
+      "level": "INFO"
+    }
+  }
+}

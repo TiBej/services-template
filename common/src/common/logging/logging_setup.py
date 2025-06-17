@@ -1,20 +1,15 @@
+import json
 import logging
-import os
-
-from common.logging.otel_logger import OtelLogger
+import logging.config
+import pathlib
 
 
 def setup_logging():
     """
-    Setup root logger & attaches open telemetry handler
+    Setup logging
     """
-    otel_logger = OtelLogger(
-        service_environment=os.getenv("SERVICE_ENVIRONMENT", "development"),
-        service_name=os.getenv("SERVICE_NAME", "default-service"),
-        otel_host=os.getenv("OTEL_HOST", "localhost"),
-        otel_port=int(os.getenv("OTEL_PORT", 4317)),
-    )
-    handler = otel_logger.get_handler()
+    config_file = pathlib.Path(__file__).parent / "default_config.json"
+    with open(config_file) as f_in:
+        config = json.load(f_in)
 
-    logging.getLogger().setLevel(logging.INFO)
-    logging.getLogger().addHandler(handler)
+    logging.config.dictConfig(config)
