@@ -4,18 +4,8 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "common",
-    "fastapi[standard]>=0.115.12",
+ "fastapi[standard]>=0.115.13",
 ]
 
 [tool.uv.sources]
-common = { path = "../common", editable = true }
-
-[dependency-groups]
-dev = [
-    "pyright>=1.1.401",
-    "ruff>=0.11.13",
-]
-
-[tool.pyright]
-typeCheckingMode = "strict"
-extraPaths = ["../common/src"] # required to resolve common dependency
+common = { workspace = true }
