@@ -1,14 +1,14 @@
-FROM python:3.13-slim
+FROM python:3.13.5-slim-bookworm
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+ENV PYTHONUNBUFFERED=True
+WORKDIR /workspace
 
-WORKDIR /app
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
-COPY common ./common
-COPY api-service ./api-service
-WORKDIR /app/api-service
+COPY pyproject.toml uv.lock /workspace/
+RUN uv sync --frozen --no-install-workspace --package=api-service
 
-RUN pip install uv
-RUN uv sync --frozen --no-cache
+COPY . /workspace
+RUN uv sync --frozen --package=api-service
 
-CMD ["uv", "run", "fastapi", "run", "main.py", "--port", "5001"]
+CMD ["/workspace/.venv/bin/python", "/workspace/api-service", "fastapi", "run", "main.py", "--port", "5001"]

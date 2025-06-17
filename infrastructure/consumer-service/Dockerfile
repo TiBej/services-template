@@ -1,13 +1,14 @@
-FROM python:3.13-alpine3.21
-ARG SERVICE_NAME
+FROM python:3.13.5-slim-bookworm
 
-WORKDIR /app
+ENV PYTHONUNBUFFERED=True
+WORKDIR /workspace
 
-COPY common ./common
-COPY consumer-service ./consumer-service
-WORKDIR /app/consumer-service
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
-RUN pip install uv
-RUN uv sync
+COPY pyproject.toml uv.lock /workspace/
+RUN uv sync --frozen --no-install-workspace --package=consumer-service
 
-CMD ["uv", "run", "main.py"]
+COPY . /workspace
+RUN uv sync --frozen --package=consumer-service
+
+CMD ["/workspace/.venv/bin/python", "/workspace/consumer-service/main.py"]
