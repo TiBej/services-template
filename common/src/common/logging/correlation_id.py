@@ -1,7 +1,7 @@
+import logging
 import uuid
 from contextlib import contextmanager
 from contextvars import ContextVar
-from logging import Filter, LogRecord
 
 ctx_correlation_id = ContextVar("correlation_id", default="")
 
@@ -19,12 +19,12 @@ def set_correlation_id(correlation_id: str | None = None):
         ctx_correlation_id.reset(token)
 
 
-class CorrelationIdFilter(Filter):
+class CorrelationIdFilter(logging.Filter):
     """
     A filter which injects context-specific information into logs
     Can be used with %(correlation_id)s
     """
 
-    def filter(self, record: LogRecord):
+    def filter(self, record: logging.LogRecord):
         record.correlation_id = ctx_correlation_id.get()
         return True

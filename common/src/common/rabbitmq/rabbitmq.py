@@ -7,6 +7,7 @@ from typing import Callable, Type, TypeVar
 
 import pika
 
+from common.config.base_config import BaseConfig
 from common.events.base_event import BaseEvent
 
 logger = logging.getLogger(__name__)
@@ -15,14 +16,12 @@ logger = logging.getLogger(__name__)
 class RabbitMQ:
     T = TypeVar("T", bound=BaseEvent)
 
-    def __init__(
-        self, service_name: str, user: str, password: str, host: str, port: int
-    ):
-        self.service_name = service_name
-        self.user = user
-        self.password = password
-        self.host = host
-        self.port = port
+    def __init__(self, config: BaseConfig):
+        self.service_name = config.service_name
+        self.user = config.rabbitmq_user
+        self.password = config.rabbitmq_password
+        self.host = config.rabbitmq_host
+        self.port = config.rabbitmq_port
         self.connection = None
         self.channel = None
         self.connect()
