@@ -1,4 +1,3 @@
-import asyncio
 import logging
 
 from common.events.mail_triggered import MailTriggeredEvent
@@ -8,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class MailTriggeredEventConsumer(BaseConsumer[MailTriggeredEvent]):
-    async def consume(self, event: MailTriggeredEvent) -> None:
-        await asyncio.sleep(1)
-        logger.info(event)
-        logger.info("hi")
+    """Consumer for MailEventTriggered."""
+
+    async def _consume(self, event: MailTriggeredEvent) -> None:
+        logger.info("Sucessfully consumed %s", event)

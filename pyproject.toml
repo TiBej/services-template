@@ -15,3 +15,7 @@ dev = ["pyright>=1.1.402", "ruff>=0.11.13"]
 [tool.pyright]
 typeCheckingMode = "strict"
 extraPaths = ["common/src"] # required to resolve common dependency
+
+[tool.ruff]
+lint.select = ["ALL"]
+lint.ignore = ["INP001", "D100", "EXE002", "COM812"]

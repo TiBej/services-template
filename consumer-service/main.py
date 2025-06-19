@@ -1,3 +1,5 @@
+import logging
+
 from consumers.mail_triggered_event_consumer import MailTriggeredEventConsumer
 
 from common.config.base_config import BaseConfig
@@ -8,12 +10,14 @@ from common.rabbitmq.rabbitmq import RabbitMQ
 config = BaseConfig()
 setup_logging(config)
 rabbitmq = RabbitMQ(config)
+logger = logging.getLogger(__name__)
 
 
-def main():
+def main() -> None:
+    """Start Consumer Service."""
     consumer = MailTriggeredEventConsumer(MailTriggeredEvent, rabbitmq)
     consumer.start_consuming()
-    print("Started Service")
+    logger.info("Service started")
 
 
 if __name__ == "__main__":

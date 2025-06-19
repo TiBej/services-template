@@ -4,11 +4,8 @@ import logging.config
 from common.config.base_config import BaseConfig
 
 
-def setup_logging(config: BaseConfig):
-    """
-    Setup logging
-    """
-
+def setup_logging(config: BaseConfig) -> None:
+    """Configure basic logging."""
     logging_config = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -18,8 +15,8 @@ def setup_logging(config: BaseConfig):
         },
         "filters": {
             "correlation_id_filter": {
-                "()": "common.logging.correlation_id.CorrelationIdFilter"
-            }
+                "()": "common.logging.correlation_id.CorrelationIdFilter",
+            },
         },
         "handlers": {
             "otel": {

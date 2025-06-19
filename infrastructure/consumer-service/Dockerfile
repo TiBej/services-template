@@ -6,9 +6,9 @@ WORKDIR /workspace
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
 COPY pyproject.toml uv.lock /workspace/
-RUN uv sync --frozen --no-install-workspace --package=consumer-service
+RUN uv sync --no-dev --frozen --no-install-workspace --package=consumer-service
 
 COPY . /workspace
-RUN uv sync --frozen --package=consumer-service
+RUN uv sync --no-dev --frozen --package=consumer-service
 
 CMD ["/workspace/.venv/bin/python", "/workspace/consumer-service/main.py"]

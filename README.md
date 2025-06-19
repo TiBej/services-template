@@ -3,8 +3,8 @@
 ### Setup Dev Environment
 
 1. Open Project in VSC
-3. Install recommended extensions
-4. Setup `uv` https://docs.astral.sh/uv/getting-started/installation/
+2. Install recommended extensions
+3. Setup `uv` https://docs.astral.sh/uv/getting-started/installation/
 
 ### Run Project
 

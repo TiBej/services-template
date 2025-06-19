@@ -8,7 +8,7 @@ services:
       - rabbitmq
       - otel-collector
     ports:
-      - "6001:5001"
+      - "5001:5001"
     environment:
       SERVICE_NAME: api-service
       SERVICE_ENVIRONMENT: ${SERVICE_ENVIRONMENT}
