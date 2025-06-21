@@ -36,8 +36,9 @@ async def logging_mw(
             "New Incoming Request",
             extra={
                 "request_method": request.method,
-                "request_url": request.url,
                 "request_header": request.headers,
+                "request_path": request.url.path,
+                "request_query": request.url.query,
             },
         )
         response = await call_next(request)

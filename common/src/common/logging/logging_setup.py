@@ -10,7 +10,9 @@ def setup_logging(config: BaseConfig) -> None:
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
-            "default": {"format": "[%(correlation_id)s] [api-service] ::: %(message)s"},
+            "otel": {
+                "format": f"[%(correlation_id)s] [{config.service_name}] :: %(message)s"
+            },
             "simple": {"format": "%(levelname)s: %(message)s"},
         },
         "filters": {
@@ -22,7 +24,7 @@ def setup_logging(config: BaseConfig) -> None:
             "otel": {
                 "()": "common.logging.otel_handler.OtelHandler",
                 "filters": ["correlation_id_filter"],
-                "formatter": "default",
+                "formatter": "otel",
                 "service_name": config.service_name,
                 "service_environment": config.service_environment,
                 "otel_host": config.otel_host,
