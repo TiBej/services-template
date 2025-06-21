@@ -5,6 +5,7 @@ import logging
 import math
 import time
 from collections.abc import Callable
+from dataclasses import asdict
 
 import pika
 from pika.exceptions import AMQPConnectionError
@@ -39,7 +40,7 @@ class Connection:
 
         channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
 
-        message = json.dumps(event.__dict__)
+        message = json.dumps(asdict(event))
 
         channel.basic_publish(
             exchange=exchange_name,
