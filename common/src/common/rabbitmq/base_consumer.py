@@ -18,7 +18,7 @@ class BaseConsumer[B: BaseEvent]:
         self.event_type = event_type
         self.rabbitmq = rabbitmq
 
-    async def _handle_event(self, event: B) -> None:
+    def _handle_event(self, event: B) -> None:
         """Handle incoming events and set the correlation id."""
         with set_correlation_id(event.correlation_id):
             logger.info(
@@ -29,17 +29,20 @@ class BaseConsumer[B: BaseEvent]:
                     "event_object": event,
                 },
             )
-            await self._consume(event)
+        self._consume(event)
 
     @abstractmethod
-    async def _consume(self, event: B) -> None:
+    def _consume(self, event: B) -> None:
         raise NotImplementedError
 
-    def start_consuming(self) -> None:
+    async def start_consuming(self) -> None:
         """Start consuming messages from RabbitMQ."""
 
-        # Wrap the async method in a sync function
-        def sync_handle_event(event: B) -> None:
-            asyncio.run(self._handle_event(event))
+        async def consume_async() -> None:
+            with self.rabbitmq.connection() as connection:
+                connection.consume(
+                    message_type=self.event_type,
+                    func=self._handle_event,
+                )
 
-        self.rabbitmq.consume(self.event_type, sync_handle_event)
+        await asyncio.to_thread(consume_async)
