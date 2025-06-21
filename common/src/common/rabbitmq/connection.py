@@ -8,6 +8,8 @@ from collections.abc import Callable
 from dataclasses import asdict
 
 import pika
+import pika.spec
+from pika.adapters.blocking_connection import BlockingChannel
 from pika.exceptions import AMQPConnectionError
 from retry import retry
 
@@ -82,11 +84,16 @@ class Connection:
         error_queue_name = f"{self.service_name}-{exchange_name}-error"
         channel.queue_declare(queue=error_queue_name, durable=True)
 
-        def callback(ch, method, properties, body: str) -> None:  # noqa: ANN001, ARG001
+        def callback(
+            ch: BlockingChannel,  # noqa: ARG001
+            method: pika.spec.Basic.Deliver,  # noqa: ARG001
+            properties: pika.spec.BasicProperties,  # noqa: ARG001
+            body: str,
+        ) -> None:
             # convert message to type
             event_data = json.loads(body)
             event_instance = message_type(**event_data)
-            # process
+
             try:
                 func(event_instance)
             except Exception as e:
