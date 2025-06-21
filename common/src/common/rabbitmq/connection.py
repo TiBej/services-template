@@ -11,7 +11,6 @@ from pika.exceptions import AMQPConnectionError
 from retry import retry
 
 from common.events.base_event import BaseEvent
-from common.rabbitmq.rabbitmq import RabbitMQ
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +18,17 @@ logger = logging.getLogger(__name__)
 class Connection:
     """Connection & Communication with RabbitMQ."""
 
-    def __init__(self, rabbitmq: RabbitMQ) -> None:
+    def __init__(
+        self, connection_parameter: pika.ConnectionParameters, service_name: str
+    ) -> None:
         """Initialize & start connection."""
-        self.rabbitmq = rabbitmq
+        self.connection_parameter = connection_parameter
+        self.service_name = service_name
         self.conn = None
 
     def _get_connection(self) -> pika.BlockingConnection:
         if self.conn is None or self.conn.is_closed:
-            self.conn = pika.BlockingConnection(self.rabbitmq.parameters)
+            self.conn = pika.BlockingConnection(self.connection_parameter)
         return self.conn
 
     @retry(AMQPConnectionError, backoff=2, max_delay=512, logger=logger)
@@ -71,12 +73,12 @@ class Connection:
         channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
 
         # processing queue
-        processing_queue_name = f"{self.rabbitmq.service_name}-{exchange_name}"
+        processing_queue_name = f"{self.service_name}-{exchange_name}"
         channel.queue_declare(queue=processing_queue_name, durable=True)
         channel.queue_bind(exchange=exchange_name, queue=processing_queue_name)
 
         # error queue
-        error_queue_name = f"{self.rabbitmq.service_name}-{exchange_name}-error"
+        error_queue_name = f"{self.service_name}-{exchange_name}-error"
         channel.queue_declare(queue=error_queue_name, durable=True)
 
         def callback(ch, method, properties, body: str) -> None:  # noqa: ANN001, ARG001

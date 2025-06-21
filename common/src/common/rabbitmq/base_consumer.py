@@ -1,6 +1,8 @@
 import asyncio
 import logging
 from abc import abstractmethod
+from types import CoroutineType
+from typing import Any
 
 from common.events.base_event import BaseEvent
 from common.logging.correlation_id import set_correlation_id
@@ -35,14 +37,14 @@ class BaseConsumer[B: BaseEvent]:
     def _consume(self, event: B) -> None:
         raise NotImplementedError
 
-    async def start_consuming(self) -> None:
+    def start_consuming(self) -> CoroutineType[Any, Any, None]:
         """Start consuming messages from RabbitMQ."""
 
-        async def consume_async() -> None:
+        def consume_async() -> None:
             with self.rabbitmq.connection() as connection:
                 connection.consume(
                     message_type=self.event_type,
                     func=self._handle_event,
                 )
 
-        await asyncio.to_thread(consume_async)
+        return asyncio.to_thread(consume_async)

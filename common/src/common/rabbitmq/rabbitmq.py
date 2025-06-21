@@ -5,7 +5,6 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 
 import pika
-from pika.adapters.blocking_connection import BlockingConnection
 
 from common.config.base_config import BaseConfig
 from common.rabbitmq.connection import Connection
@@ -23,7 +22,7 @@ class RabbitMQ:
         credentials = pika.PlainCredentials(
             config.rabbitmq_user, config.rabbitmq_password
         )
-        self.parameters = pika.ConnectionParameters(
+        self.parameter = pika.ConnectionParameters(
             host=config.rabbitmq_host,
             port=config.rabbitmq_port,
             connection_attempts=3,
@@ -33,10 +32,11 @@ class RabbitMQ:
     @contextmanager
     def connection(self) -> Iterator[Connection]:
         """Get a currently unused connection."""
-        blocking_connection = BlockingConnection(self.parameters)
-        connection = Connection(self)
+        connection = Connection(
+            connection_parameter=self.parameter, service_name=self.service_name
+        )
         try:
             yield connection
         finally:
-            if connection and not blocking_connection.is_closed:
-                blocking_connection.close()
+            if connection.conn and not connection.conn.is_closed:
+                connection.conn.close()
