@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from consumers.mail_triggered_event_consumer import MailTriggeredEventConsumer
@@ -13,12 +14,14 @@ rabbitmq = RabbitMQ(config)
 logger = logging.getLogger(__name__)
 
 
-def main() -> None:
+async def main() -> None:
     """Start Consumer Service."""
-    consumer = MailTriggeredEventConsumer(MailTriggeredEvent, rabbitmq)
-    consumer.start_consuming()
-    logger.info("Service started")
+    async with asyncio.TaskGroup() as tg:
+        consumer = MailTriggeredEventConsumer(MailTriggeredEvent, rabbitmq)
+        tg.create_task(consumer.start_consuming())
+
+        logger.info("Service successfully started")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
