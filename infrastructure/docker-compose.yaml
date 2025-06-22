@@ -1,0 +1,5 @@
+include:
+  - logging/compose.yaml
+  - rabbitmq/compose.yaml
+  - api-service/compose.yaml
+  - consumer-service/compose.yaml

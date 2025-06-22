@@ -1,0 +1,20 @@
+services:
+  api-service:
+    build:
+      dockerfile: infrastructure/api-service/Dockerfile
+      context: ../../
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - otel-collector
+    ports:
+      - "5001:5001"
+    environment:
+      SERVICE_NAME: api-service
+      SERVICE_ENVIRONMENT: ${SERVICE_ENVIRONMENT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      OTEL_HOST: ${OTEL_HOST}
+      OTEL_PORT: ${OTEL_PORT}
