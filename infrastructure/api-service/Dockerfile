@@ -11,4 +11,4 @@ RUN uv sync --no-dev --frozen --no-install-workspace --package=api-service
 COPY . /workspace
 RUN uv sync --no-dev --frozen --package=api-service
 
-CMD ["/workspace/.venv/bin/python", "/workspace/api-service", "fastapi", "run", "main.py", "--port", "5001"]
+CMD ["/workspace/.venv/bin/fastapi", "run", "/workspace/api-service/main.py", "--port", "5001"]
