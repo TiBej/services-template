@@ -1,24 +1,21 @@
 services:
   otel-collector:
-    image: otel/opentelemetry-collector:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.otel
     restart: unless-stopped
-    volumes:
-      - ./otel-config.yaml:/etc/otel/config.yaml
-    command:
-      - "--config=/etc/otel/config.yaml"
     ports:
       - "4317:4317" #grpc
       - "4318:4318" #http
     depends_on:
       - loki
   loki:
-    image: grafana/loki:main
+    build:
+      context: .
+      dockerfile: Dockerfile.loki
     restart: unless-stopped
     ports:
       - "3100:3100"
-    volumes:
-      - ./loki-config.yaml:/etc/loki/local-config.yaml
-    command: -config.file=/etc/loki/local-config.yaml
   grafana:
     image: grafana/grafana:11.6.0
     restart: unless-stopped
