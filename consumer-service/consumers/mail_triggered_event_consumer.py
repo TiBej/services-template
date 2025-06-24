@@ -9,5 +9,5 @@ logger = logging.getLogger(__name__)
 class MailTriggeredEventConsumer(BaseConsumer[MailTriggeredEvent]):
     """Consumer for MailEventTriggered."""
 
-    async def _consume(self, event: MailTriggeredEvent) -> None:
+    def _consume(self, event: MailTriggeredEvent) -> None:
         logger.info("Sucessfully consumed %s", event)
