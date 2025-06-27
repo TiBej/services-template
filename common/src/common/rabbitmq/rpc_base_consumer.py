@@ -10,38 +10,42 @@ from .rabbitmq import RabbitMQ
 logger = logging.getLogger(__name__)
 
 
-class BaseConsumer[B: BaseEvent]:
-    """Base class for all consumers, handling correlation id's and event consumption."""
+# RT = response type, CT = consumer type
+class RPCBaseConsumer[CT: BaseEvent, RT: BaseEvent]:
+    """Base class for all RPC consumers."""
 
-    def __init__(self, event_type: type[B], rabbitmq: RabbitMQ) -> None:
+    def __init__(
+        self, consume_type: type[CT], response_type: type[RT], rabbitmq: RabbitMQ
+    ) -> None:
         """Initialize class."""
-        self.event_type = event_type
+        self.response_type = response_type
+        self.consume_type = consume_type
         self.rabbitmq = rabbitmq
 
-    def _handle_event(self, event: B) -> None:
+    def _handle_event(self, event: CT) -> RT:
         """Handle incoming events and set the correlation id."""
         with set_correlation_id(event.correlation_id):
             logger.info(
                 "Consuming %s",
-                self.event_type,
+                self.response_type,
                 extra={
-                    "event_type": self.event_type,
+                    "event_type": self.response_type,
                     "event_object": event,
                 },
             )
-            self._consume(event)
+            return self._consume(event)
 
     @abstractmethod
-    def _consume(self, event: B) -> None:
+    def _consume(self, event: CT) -> RT:
         raise NotImplementedError
 
     async def start_consuming(self) -> None:
         """Start consuming messages from RabbitMQ."""
 
         def exec_consume() -> None:
-            with self.rabbitmq.handler() as handler:
-                handler.consume(
-                    message_type=self.event_type,
+            with self.rabbitmq.rpc_handler(self.response_type) as rpc_handler:
+                rpc_handler.consume(
+                    consume_type=self.consume_type,
                     func=self._handle_event,
                 )
 

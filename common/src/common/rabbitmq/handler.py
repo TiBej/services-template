@@ -18,7 +18,7 @@ from common.events.base_event import BaseEvent
 logger = logging.getLogger(__name__)
 
 
-class Connection:
+class Handler:
     """Connection & Communication with RabbitMQ."""
 
     def __init__(
@@ -27,19 +27,22 @@ class Connection:
         """Initialize & start connection."""
         self.connection_parameter = connection_parameter
         self.service_name = service_name
-        self.conn = None
+        self.connection = None
 
     def _get_connection(self) -> pika.BlockingConnection:
-        if self.conn is None or self.conn.is_closed:
-            self.conn = pika.BlockingConnection(self.connection_parameter)
-        return self.conn
+        if self.connection is None or self.connection.is_closed:
+            self.connection = pika.BlockingConnection(self.connection_parameter)
+        return self.connection
 
     @retry(AMQPConnectionError, backoff=2, max_delay=512, logger=logger)
-    def publish(self, event: BaseEvent) -> None:
+    def publish(
+        self,
+        event: BaseEvent,
+    ) -> None:
         """Publish a event as message."""
         exchange_name = f"{event.__module__}.{type(event).__name__}".lower()
-        channel = self._get_connection().channel()
 
+        channel = self._get_connection().channel()
         channel.exchange_declare(exchange=exchange_name, exchange_type="fanout")
 
         message = json.dumps(asdict(event))

@@ -22,6 +22,6 @@ async def read_user(
         body="test",
         recipient_email="test",
     )
-    with rabbitmq.connection() as connection:
-        connection.publish(triggered_event)
+    with rabbitmq.handler() as handler:
+        handler.publish(triggered_event)
         return {"username": username}

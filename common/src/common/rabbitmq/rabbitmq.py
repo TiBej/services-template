@@ -7,7 +7,9 @@ from contextlib import contextmanager
 import pika
 
 from common.config.base_config import BaseConfig
-from common.rabbitmq.connection import Connection
+from common.events.base_event import BaseEvent
+from common.rabbitmq.handler import Handler
+from common.rabbitmq.rpc_handler import RPCHandler
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +32,25 @@ class RabbitMQ:
         )
 
     @contextmanager
-    def connection(self) -> Iterator[Connection]:
-        """Get a currently unused connection."""
-        connection = Connection(
+    def handler(self) -> Iterator[Handler]:
+        """Get a rabbitmq handler that does basic publish & consume."""
+        handler = Handler(
             connection_parameter=self.parameter, service_name=self.service_name
         )
         try:
-            yield connection
+            yield handler
         finally:
-            if connection.conn and not connection.conn.is_closed:
-                connection.conn.close()
+            if handler.connection and not handler.connection.is_closed:
+                handler.connection.close()
+
+    # RT = response type, CT = consumer type
+    @contextmanager
+    def rpc_handler[RT: BaseEvent, CT: BaseEvent](
+        self, response_type: type[RT]
+    ) -> Iterator[RPCHandler[CT, RT]]:
+        """Get a rabbitmq handler that manages request/reply."""
+        rpc_handler = RPCHandler[CT, RT](
+            connection_parameter=self.parameter,
+            response_type=response_type,
+        )
+        yield rpc_handler
