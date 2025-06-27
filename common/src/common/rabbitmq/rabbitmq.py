@@ -46,11 +46,12 @@ class RabbitMQ:
     # RT = response type, CT = consumer type
     @contextmanager
     def rpc_handler[RT: BaseEvent, CT: BaseEvent](
-        self, response_type: type[RT]
-    ) -> Iterator[RPCHandler[CT, RT]]:
-        """Get a rabbitmq handler that manages request/reply."""
-        rpc_handler = RPCHandler[CT, RT](
+        self, response_type: type[RT], consume_type: type[CT]
+    ) -> Iterator[RPCHandler[RT, CT]]:
+        """Get a rabbitmq handler that manages request / reply."""
+        rpc_handler = RPCHandler[RT, CT](
             connection_parameter=self.parameter,
             response_type=response_type,
+            consume_type=consume_type,
         )
         yield rpc_handler

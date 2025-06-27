@@ -24,11 +24,15 @@ class RPCHandler[RT: BaseEvent, CT: BaseEvent]:
         self,
         connection_parameter: pika.ConnectionParameters,
         response_type: type[RT],
+        consume_type: type[CT],
     ) -> None:
         """Initialize & start connection."""
         self.connection_parameter = connection_parameter
         self.response_type = response_type
-        self.queue_name = f"{response_type.__module__}.{response_type.__name__}".lower()
+
+        consume_part = f"{consume_type.__module__}.{consume_type.__name__}"
+        response_part = f"{response_type.__module__}.{response_type.__name__}"
+        self.queue_name = f"{consume_part}-{response_part}".lower()
 
     @retry(AMQPConnectionError, backoff=1, max_delay=4, logger=logger)
     def _server_reply(

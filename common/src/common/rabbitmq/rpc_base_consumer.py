@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 # RT = response type, CT = consumer type
-class RPCBaseConsumer[CT: BaseEvent, RT: BaseEvent]:
+class RPCBaseConsumer[RT: BaseEvent, CT: BaseEvent]:
     """Base class for all RPC consumers."""
 
     def __init__(
@@ -43,7 +43,9 @@ class RPCBaseConsumer[CT: BaseEvent, RT: BaseEvent]:
         """Start consuming messages from RabbitMQ."""
 
         def exec_consume() -> None:
-            with self.rabbitmq.rpc_handler(self.response_type) as rpc_handler:
+            with self.rabbitmq.rpc_handler(
+                self.response_type, self.consume_type
+            ) as rpc_handler:
                 rpc_handler.consume(
                     consume_type=self.consume_type,
                     func=self._handle_event,

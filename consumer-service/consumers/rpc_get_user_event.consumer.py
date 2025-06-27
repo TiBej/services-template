@@ -7,7 +7,7 @@ from common.rabbitmq.rpc_base_consumer import RPCBaseConsumer
 logger = logging.getLogger(__name__)
 
 
-class MailTriggeredEventConsumer(RPCBaseConsumer[UserResponseEvent]):
+class MailTriggeredEventConsumer(RPCBaseConsumer[UserResponseEvent, UserRequestEvent]):
     """Consumer for MailEventTriggered."""
 
     def _consume(self, event: UserRequestEvent) -> UserResponseEvent:
